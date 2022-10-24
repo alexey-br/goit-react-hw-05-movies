@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, Outlet, useParams } from 'react-router-dom';
 import * as API from '../../services/themoviedb-API';
 
 export default function MovieDetails() {
@@ -28,6 +28,16 @@ export default function MovieDetails() {
       <p>{overview}</p>
       <p>Genres</p>
       <p>{genresList}</p>
+      <h2>Additional information</h2>
+      <ul>
+        <li>
+          <Link to="cast">Cast</Link>
+        </li>
+        <li>
+          <Link to="reviews">Review</Link>
+        </li>
+      </ul>
+      <Outlet />
     </>
   );
 }

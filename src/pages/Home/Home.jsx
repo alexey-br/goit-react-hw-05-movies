@@ -3,9 +3,11 @@ import * as API from 'services/themoviedb-API';
 import { useState, useEffect } from 'react';
 
 import MoviesList from 'components/MoviesList';
+import { useLocation } from 'react-router-dom';
 
 export default function Home() {
   const [moviesData, setMoviesData] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     API.getTrendingMovies()
@@ -17,7 +19,7 @@ export default function Home() {
   return (
     <>
       <h1>Trending today</h1>
-      <MoviesList moviesData={moviesData} />
+      <MoviesList moviesData={moviesData} location={location} />
     </>
   );
 }

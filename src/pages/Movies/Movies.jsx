@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as API from '../../services/themoviedb-API';
 import MoviesList from 'components/MoviesList';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 export default function Movies() {
-  const [query, setQuery] = useState('');
   const [moviesData, setMoviesData] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query') ?? '';
+  const location = useLocation();
 
   useEffect(() => {
     if (query === '') return;
@@ -15,15 +18,13 @@ export default function Movies() {
       .catch(error => console.log('search movies error - ', error));
   }, [query]);
 
-  useEffect(() => {
-    console.log(moviesData);
-  }, [moviesData]);
+  const onSearch = text => setSearchParams(text !== '' ? { query: text } : {});
 
   return (
     <>
       <Formik
-        initialValues={{ query: '' }}
-        onSubmit={(values, _) => setQuery(values.query.trim())}
+        initialValues={{ query: query }}
+        onSubmit={(values, _) => onSearch(values.query.trim())}
       >
         <Form>
           <Field
@@ -35,7 +36,9 @@ export default function Movies() {
           <button type="submit">Search</button>
         </Form>
       </Formik>
-      <MoviesList moviesData={moviesData} />
+      {moviesData.length > 0 && (
+        <MoviesList moviesData={moviesData} location={location} />
+      )}
     </>
   );
 }

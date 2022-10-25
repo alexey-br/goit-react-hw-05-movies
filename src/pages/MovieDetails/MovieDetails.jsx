@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import * as API from '../../services/themoviedb-API';
 
 export default function MovieDetails() {
   const [movieInfo, setMovieInfo] = useState({});
-
   const { id: movieId } = useParams();
+  const location = useLocation();
+  const backLinkHref = location.state?.from ?? '/';
 
   useEffect(() => {
     API.getMovieInfo(movieId)
@@ -19,6 +20,9 @@ export default function MovieDetails() {
 
   return (
     <>
+      <Link to={backLinkHref}>
+        <button type="button">Go back</button>
+      </Link>
       <img src={posterUrl} alt={`${title} movie poster`} />
       <p>
         {title} ({releaseYear})

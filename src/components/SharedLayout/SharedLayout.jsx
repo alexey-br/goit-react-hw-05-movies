@@ -1,14 +1,17 @@
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { NavBar, Link } from './SharedLayout.styled';
 
 export default function SharedLayout() {
   return (
     <>
-      <header>
+      <NavBar>
         <nav>
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/movies">Movies</NavLink>
+          <Link to="/" end>
+            Home
+          </Link>
+          <Link to="/movies">Movies</Link>
         </nav>
-      </header>
+      </NavBar>
       <Outlet />
     </>
   );

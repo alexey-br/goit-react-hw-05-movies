@@ -1,7 +1,8 @@
 import * as API from 'services/themoviedb-API';
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+
+import MoviesList from 'components/MoviesList';
 
 export default function Home() {
   const [moviesData, setMoviesData] = useState([]);
@@ -16,13 +17,7 @@ export default function Home() {
   return (
     <>
       <h1>Trending today</h1>
-      <ul>
-        {moviesData.map(({ id, title }) => (
-          <li key={id}>
-            <Link to={`/movies/${id}`}>{title}</Link>
-          </li>
-        ))}
-      </ul>
+      <MoviesList moviesData={moviesData} />
     </>
   );
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import noPhoto from '../images/no-photo.jpg';
 
 const KEY = 'e8f4d647cde955cba1306001955cfd97';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w300';
@@ -48,7 +49,7 @@ export const normalizeMovieInfo = movieInfo => {
   const genresList = genres.map(({ name }) => name).join(', ');
   const userScore = Math.floor(vote_average * 10);
   const releaseYear = parseInt(release_date);
-  const posterUrl = IMAGE_BASE_URL + poster_path;
+  const posterUrl = poster_path ? IMAGE_BASE_URL + poster_path : noPhoto;
 
   return {
     posterUrl,
@@ -62,7 +63,7 @@ export const normalizeMovieInfo = movieInfo => {
 
 export const normalizeCastData = data => {
   return data.map(({ id, name, character, profile_path }) => {
-    const fotoURL = IMAGE_BASE_URL + profile_path;
+    const fotoURL = profile_path ? IMAGE_BASE_URL + profile_path : noPhoto;
     return { id, name, character, fotoURL };
   });
 };

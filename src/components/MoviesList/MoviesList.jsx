@@ -1,14 +1,15 @@
-import { Link } from 'react-router-dom';
+/** @jsxImportSource theme-ui */
+import { ListItem, MovieLink } from './MoviesList.styled';
 
 export default function MoviesList({ moviesData, location }) {
   return (
-    <ul>
+    <ul sx={{ mt: 3 }}>
       {moviesData.map(({ id, title }) => (
-        <li key={id}>
-          <Link to={`/movies/${id}`} state={{ from: location }}>
+        <ListItem key={id}>
+          <MovieLink to={`/movies/${id}`} state={{ from: location }}>
             {title}
-          </Link>
-        </li>
+          </MovieLink>
+        </ListItem>
       ))}
     </ul>
   );

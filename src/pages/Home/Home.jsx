@@ -9,16 +9,25 @@ export default function Home() {
   const location = useLocation();
 
   useEffect(() => {
-    API.getTrendingMovies()
-      .then(response => response.data.results)
-      .then(data => setMoviesData(API.normalizeMoviesData(data)))
+    const controller = new AbortController();
+
+    API.getTrendingMovies(controller)
+      .then(response => {
+        setMoviesData(response);
+      })
       .catch(error => console.log('request error - ', error));
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
     <Section>
       <h1>Trending today:</h1>
-      <MoviesList moviesData={moviesData} location={location} />
+      {moviesData.length > 0 && (
+        <MoviesList moviesData={moviesData} location={location} />
+      )}
     </Section>
   );
 }

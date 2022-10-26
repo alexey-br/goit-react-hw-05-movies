@@ -1,6 +1,8 @@
+import { InfoTag } from 'components/reusableComponents/InfoTag/InfoTag';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as API from '../../services/themoviedb-API';
+import { CastList } from './Cast.styled';
 
 export default function Cast() {
   const [cast, setCast] = useState([]);
@@ -15,16 +17,22 @@ export default function Cast() {
   }, [movieId]);
 
   return (
-    <ul>
+    <CastList>
       {cast.map(({ id, name, character, fotoURL }) => {
         return (
           <li key={id}>
             <img src={fotoURL} alt={`${name} foto`} />
-            <p>Name: {name}</p>
-            <p>Character: {character}</p>
+            <p>
+              <InfoTag>Name: </InfoTag>
+              {name}
+            </p>
+            <p>
+              <InfoTag>Character: </InfoTag>
+              {character}
+            </p>
           </li>
         );
       })}
-    </ul>
+    </CastList>
   );
 }

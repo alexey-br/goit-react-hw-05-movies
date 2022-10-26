@@ -9,20 +9,23 @@ const params = {
   api_key: KEY,
 };
 
-export const getTrendingMovies = async () => {
-  return await axios.get('/trending/movie/week', {
+export const getTrendingMovies = async controller => {
+  const response = await axios.get('/trending/movie/week', {
     params: params,
+    signal: controller.signal,
   });
+  return normalizeMoviesData(response.data.results);
 };
 
-export const fetchMovies = async query => {
+export const fetchMovies = async (query, controller) => {
   const searchParams = { ...params, query: query };
 
-  const result = await axios.get('/search/movie', {
+  const response = await axios.get('/search/movie', {
     params: searchParams,
+    signal: controller.signal,
   });
 
-  return result.data.results;
+  return normalizeMoviesData(response.data.results);
 };
 
 export const getMovieInfo = async id => {

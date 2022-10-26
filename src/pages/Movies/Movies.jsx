@@ -14,9 +14,17 @@ export default function Movies() {
   useEffect(() => {
     if (query === '') return;
 
-    API.fetchMovies(query)
-      .then(response => setMoviesData(API.normalizeMoviesData(response)))
+    const controller = new AbortController();
+
+    API.fetchMovies(query, controller)
+      .then(response => {
+        setMoviesData(response);
+      })
       .catch(error => console.log('search movies error - ', error));
+
+    return () => {
+      controller.abort();
+    };
   }, [query]);
 
   const onSearch = text => setSearchParams(text !== '' ? { query: text } : {});

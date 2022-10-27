@@ -1,32 +1,40 @@
 import { Section } from 'components/reusableComponents/Section/Section';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { Button } from 'components/reusableComponents/Button/Button';
 import * as API from '../../services/themoviedb-API';
 import MovieInfo from 'components/MovieInfo';
 import AddInfoMenu from 'components/AddInfoMenu';
+import { useRef } from 'react';
 
 export default function MovieDetails() {
   const [movieInfo, setMovieInfo] = useState({});
   const { id: movieId } = useParams();
   const location = useLocation();
-  const backLinkHref = location.state?.from ?? '/';
+  const backLinkHref = useRef(location.state?.from ?? '/');
 
   useEffect(() => {
-    API.getMovieInfo(movieId)
-      .then(response => response.data)
-      .then(data => setMovieInfo(API.normalizeMovieInfo(data)))
+    const controller = new AbortController();
+
+    API.getMovieInfo(movieId, controller)
+      .then(setMovieInfo)
       .catch(error => console.log('get movie info error - ', error));
+
+    return () => {
+      controller.abort();
+    };
   }, [movieId]);
 
   return (
     <Section>
-      <Link to={backLinkHref}>
+      <Link to={backLinkHref.current}>
         <Button type="button">Go back</Button>
       </Link>
-      <MovieInfo movieInfo={movieInfo} />
+      {movieInfo.title && <MovieInfo movieInfo={movieInfo} />}
       <AddInfoMenu />
-      <Outlet />
+      <Suspense fallback={<div>Loading subpage...</div>}>
+        <Outlet />
+      </Suspense>
     </Section>
   );
 }

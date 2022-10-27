@@ -28,18 +28,28 @@ export const fetchMovies = async (query, controller) => {
   return normalizeMoviesData(response.data.results);
 };
 
-export const getMovieInfo = async id => {
-  return await axios.get(`/movie/${id}`, { params: params });
+export const getMovieInfo = async (id, controller) => {
+  const response = await axios.get(`/movie/${id}`, {
+    params: params,
+    signal: controller.signal,
+  });
+
+  return normalizeMovieInfo(response.data);
 };
 
-export const getMovieCast = async id => {
-  return await axios.get(`/movie/${id}/credits`, { params: params });
+export const getMovieCast = async (id, controller) => {
+  const response = await axios.get(`/movie/${id}/credits`, {
+    params: params,
+    signal: controller.signal,
+  });
+
+  return normalizeCastData(response.data.cast);
 };
 
 export const getMovieReviews = async id => {
-  const result = await axios.get(`/movie/${id}/reviews`, { params: params });
+  const response = await axios.get(`/movie/${id}/reviews`, { params: params });
 
-  return result.data.results;
+  return normalizeReviewsData(response.data.results);
 };
 
 export const normalizeMoviesData = data =>

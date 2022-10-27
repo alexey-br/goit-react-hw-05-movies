@@ -12,9 +12,7 @@ export default function Home() {
     const controller = new AbortController();
 
     API.getTrendingMovies(controller)
-      .then(response => {
-        setMoviesData(response);
-      })
+      .then(setMoviesData)
       .catch(error => console.log('request error - ', error));
 
     return () => {

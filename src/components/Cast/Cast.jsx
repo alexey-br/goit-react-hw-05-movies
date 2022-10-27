@@ -10,10 +10,15 @@ export default function Cast() {
   const { id: movieId } = useParams();
 
   useEffect(() => {
-    API.getMovieCast(movieId)
-      .then(response => response.data.cast)
-      .then(data => setCast(API.normalizeCastData(data)))
+    const controller = new AbortController();
+
+    API.getMovieCast(movieId, controller)
+      .then(setCast)
       .catch(error => console.log('get movie cast error - ', error));
+
+    return () => {
+      controller.abort();
+    };
   }, [movieId]);
 
   return (

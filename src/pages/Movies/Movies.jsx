@@ -17,9 +17,7 @@ export default function Movies() {
     const controller = new AbortController();
 
     API.fetchMovies(query, controller)
-      .then(response => {
-        setMoviesData(response);
-      })
+      .then(setMoviesData)
       .catch(error => console.log('search movies error - ', error));
 
     return () => {

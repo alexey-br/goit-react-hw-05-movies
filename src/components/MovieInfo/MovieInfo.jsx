@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
 
+import PropTypes from 'prop-types';
 import { InfoTag, MovieTitle } from './MovieInfo.styled';
 import { InfoText } from 'components/reusableComponents/InfoText/InfoText';
 
@@ -26,3 +27,14 @@ export default function MovieInfo({ movieInfo }) {
     </div>
   );
 }
+
+MovieInfo.propTypes = {
+  movieInfo: PropTypes.shape({
+    posterUrl: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    releaseYear: PropTypes.number.isRequired,
+    userScore: PropTypes.number.isRequired,
+    genresList: PropTypes.string.isRequired,
+    overview: PropTypes.string.isRequired,
+  }).isRequired,
+};

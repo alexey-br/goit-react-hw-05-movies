@@ -4,15 +4,22 @@ import { InfoText } from 'components/reusableComponents/InfoText/InfoText';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as API from '../../services/themoviedb-API';
+
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
 
   const { id: movieId } = useParams();
 
   useEffect(() => {
-    API.getMovieReviews(movieId)
-      .then(response => setReviews(API.normalizeReviewsData(response)))
+    const controller = new AbortController();
+
+    API.getMovieReviews(movieId, controller)
+      .then(setReviews)
       .catch(error => console.log('get movie reviews error - ', error));
+
+    return () => {
+      controller.abort();
+    };
   }, [movieId]);
 
   return (

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
 import { Input } from 'components/reusableComponents/Input/Input';
 import { Button } from 'components/reusableComponents/Button/Button';
@@ -20,3 +21,8 @@ export default function SearchBox({ onSearch, query }) {
     </Formik>
   );
 }
+
+SearchBox.propTypes = {
+  onSearch: PropTypes.func.isRequired,
+  query: PropTypes.string.isRequired,
+};
